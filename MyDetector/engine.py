@@ -9,7 +9,7 @@ from MyDetector.coco_utils import get_coco_api_from_dataset
 from MyDetector.coco_eval import CocoEvaluator
 
 #import importlib
-import MyDetector.utils as utils
+import MyDetector.utils_cus as utils
 #importlib.reload(utils)
 #importlib.reload(get_coco_api_from_dataset)
 
@@ -18,8 +18,8 @@ import MyDetector.utils as utils
 
 def train_one_epoch(model, optimizer, data_loader, device, epoch, print_freq):
     model.train()
-    metric_logger = utils.MetricLogger(delimiter="  ")
-    metric_logger.add_meter('lr', utils.SmoothedValue(window_size=1, fmt='{value:.6f}'))
+    metric_logger = utils_cus.MetricLogger(delimiter="  ")
+    metric_logger.add_meter('lr', utils_cus.SmoothedValue(window_size=1, fmt='{value:.6f}'))
     header = 'Epoch: [{}]'.format(epoch)
 
     lr_scheduler = None
@@ -27,7 +27,7 @@ def train_one_epoch(model, optimizer, data_loader, device, epoch, print_freq):
         warmup_factor = 1. / 1000
         warmup_iters = min(1000, len(data_loader) - 1)
 
-        lr_scheduler = utils.warmup_lr_scheduler(optimizer, warmup_iters, warmup_factor)
+        lr_scheduler = utils_cus.warmup_lr_scheduler(optimizer, warmup_iters, warmup_factor)
 
     for images, targets in metric_logger.log_every(data_loader, print_freq, header):
         images = list(image.to(device) for image in images)
@@ -38,7 +38,7 @@ def train_one_epoch(model, optimizer, data_loader, device, epoch, print_freq):
         losses = sum(loss for loss in loss_dict.values())
 
         # reduce losses over all GPUs for logging purposes
-        loss_dict_reduced = utils.reduce_dict(loss_dict)
+        loss_dict_reduced = utils_cus.reduce_dict(loss_dict)
         losses_reduced = sum(loss for loss in loss_dict_reduced.values())
 
         loss_value = losses_reduced.item()
@@ -78,7 +78,7 @@ def evaluate(model, data_loader, device):
     torch.set_num_threads(1)
     cpu_device = torch.device("cpu")
     model.eval()
-    metric_logger = utils.MetricLogger(delimiter="  ")
+    metric_logger = utils_cus.MetricLogger(delimiter="  ")
     header = 'Test:'
 
     coco = get_coco_api_from_dataset(data_loader.dataset)

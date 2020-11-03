@@ -7,6 +7,7 @@ import cv2
 from MyDetector import TF2Detector
 from MyDetector import Detectron2Detector
 from MyDetector import TorchVisionDetector
+from MyDetector import Yolov3Detector
 from utils import detectimage
 
 class TF2detectorargs:
@@ -34,6 +35,18 @@ class TorchVisiondetectorargs:
     'Unknown', 'Vehicles', 'Pedestrians', 'Cyclists'
     ]
     threshold = 0.3
+
+class Yolov3detectorargs:
+    modelname = 'yolov3'#not used here
+    config_path = 'config/yolov3-kitti.cfg'
+    modelbasefolder = '/content/PyTorch-YOLOv3-kitti/weights'
+    modelfilename='yolov3-kitti.weights'
+    showfig='True'
+    FULL_LABEL_CLASSES = [
+        'Car', 'Van', 'Truck', 'Pedestrian', 'Person_sitting', 'Cyclist', 'Tram', 'Misc'
+    ]
+    threshold = 0.3
+
 
 def testTorchVisionDetector(detectorargs):
     mydetector = TorchVisionDetector.TorchVisionFasterRCNNDetector(detectorargs)
@@ -76,12 +89,26 @@ def testTF2Detector(detectorargs):
     folderpath=os.path.join('/mnt/DATA5T/WaymoDataset/WaymoCOCO/Validation/', 'validation_0000')
     detectimage.detectimagefolder_tovideo(folderpath, mydetector, outputvideopath)
 
+def testYolov3Detector(detectorargs):
+    mydetector = Yolov3Detector.Yolov3Detector(detectorargs)
+    imgpath = '/content/PyTorch-YOLOv3-kitti/data/samples/000211.png'
+    bbox_xyxy, pred_labels, cls_conf=detectimage.detectoneimage_novis(imgpath, mydetector)
+    print(pred_labels)
+
+    #Test a folder of image and output a video
+    outputvideopath='torchvisionvideoresult.mp4'
+    folderpath=os.path.join('/mnt/DATA5T/WaymoDataset/WaymoCOCO/Validation/', 'validation_0000')
+    detectimage.detectimagefolder_tovideo(folderpath, mydetector, outputvideopath)
+
 if __name__ == "__main__":
     #Test TF2
     #testTF2Detector(TF2detectorargs)
 
     #Test Detectron2
-    testDetectron2Detector(Detectron2detectorargs)
+    #testDetectron2Detector(Detectron2detectorargs)
 
     #Test TorchVision
     #testTorchVisionDetector(TorchVisiondetectorargs)
+
+    #Test Yolov3
+    testYolov3Detector(Yolov3detectorargs)

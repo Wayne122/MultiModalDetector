@@ -1,2 +1,2 @@
-import sys
+import sysutils
 sys.path.append("MyDetector")

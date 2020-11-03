@@ -15,8 +15,8 @@ from collections import defaultdict
 
 
 import importlib
-import MyDetector.utils as utils
-importlib.reload(utils)
+import MyDetector.utils_cus as utils
+importlib.reload(utils_cus)
 
 
 class CocoEvaluator(object):
@@ -164,8 +164,8 @@ def convert_to_xywh(boxes):
 
 
 def merge(img_ids, eval_imgs):
-    all_img_ids = utils.all_gather(img_ids)
-    all_eval_imgs = utils.all_gather(eval_imgs)
+    all_img_ids = utils_cus.all_gather(img_ids)
+    all_eval_imgs = utils_cus.all_gather(eval_imgs)
 
     merged_img_ids = []
     for p in all_img_ids:
