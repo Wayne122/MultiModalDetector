@@ -15,8 +15,8 @@ from collections import defaultdict
 
 
 import importlib
-import MyDetector.utils_cus as utils
-importlib.reload(utils_cus)
+import MyDetector.utils as utils
+importlib.reload(utils)
 
 
 class CocoEvaluator(object):
