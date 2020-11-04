@@ -33,6 +33,7 @@ class Yolov3Detector(object):
         parser.add_argument('--n_cpu', type=int, default=8, help='number of cpu threads to use during batch generation')
         parser.add_argument('--img_size', type=int, default=416, help='size of each image dimension')
         parser.add_argument('--use_cuda', type=bool, default=True, help='whether to use cuda if available')
+        parser.add_argument('--showfig', type=bool, default=args.showfig, help='whether to show and save the result')
         self.opt = parser.parse_args()
 
     def detect(self, image):
