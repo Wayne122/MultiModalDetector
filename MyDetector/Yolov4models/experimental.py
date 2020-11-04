@@ -1,7 +1,7 @@
 # This file contains experimental modules
 
-from models.common import *
-from utils import google_utils
+from MyDetector.Yolov4models.common import *
+from MyDetector.yolov4_utils import google_utils
 
 
 class CrossConv(nn.Module):
