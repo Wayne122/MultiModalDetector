@@ -125,7 +125,6 @@ class Yolov3Detector(object):
                 n_cls_preds = len(unique_labels)
                 bbox_colors = random.sample(colors, n_cls_preds)
                 for x1, y1, x2, y2, conf, cls_conf, cls_pred in detections:
-                    bbox_list.append([(x1, y1), (x2, y2)])
                     cls_ids.append(int(cls_pred))
                     confs.append(cls_conf.item())
                     print ('\t+ Label: %s, Conf: %.5f' % (classes[int(cls_pred)], cls_conf.item()))
@@ -140,6 +139,8 @@ class Yolov3Detector(object):
                     bbox = patches.Rectangle((x1, y1), box_w, box_h, linewidth=2,
                                             edgecolor=color,
                                             facecolor='none')
+
+                    bbox_list.append([(x1, y1), (x1+box_w, y1+box_h)])
                     # Add the bbox to the plot
                     ax.add_patch(bbox)
                     # Add label
