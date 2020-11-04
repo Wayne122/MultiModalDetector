@@ -38,7 +38,7 @@ class TorchVisiondetectorargs:
 
 class Yolov3detectorargs:
     modelname = 'yolov3'#not used here
-    config_path = 'config/yolov3-kitti.cfg'
+    config_path = 'MyDetector/config/yolov3-kitti.cfg'
     modelbasefolder = '/content/PyTorch-YOLOv3-kitti/weights'
     modelfilename='yolov3-kitti.weights'
     showfig='True'
