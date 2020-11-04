@@ -118,7 +118,7 @@ def testYolov4Detector(detectorargs):
     print(pred_labels)
 
     #Test a folder of image and output a video
-    outputvideopath='yolov3videoresult.mp4'
+    outputvideopath='yolov4videoresult.mp4'
     folderpath='/content/PyTorch-YOLOv3-kitti/data/samples'
     detectimage.detectimagefolder_tovideo(folderpath, mydetector, outputvideopath)
 
