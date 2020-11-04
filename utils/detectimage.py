@@ -57,7 +57,7 @@ def detectoneimage_novis(imgpath, mydetector):
     return bbox_xyxy, cls_ids, cls_conf
 
 def detectimagefolder_tovideo(imgpath, mydetector, outputvideopath):
-    imagepath=sorted(glob.glob(imgpath+'/*.jpg'))
+    imagepath=sorted(glob.glob(imgpath+'/*.png'))
     imglen=len(imagepath)
     print("Total image:", imglen)
     imgidx=0

@@ -96,8 +96,8 @@ def testYolov3Detector(detectorargs):
     print(pred_labels)
 
     #Test a folder of image and output a video
-    outputvideopath='torchvisionvideoresult.mp4'
-    folderpath=os.path.join('/mnt/DATA5T/WaymoDataset/WaymoCOCO/Validation/', 'validation_0000')
+    outputvideopath='yolov3videoresult.mp4'
+    folderpath='/content/PyTorch-YOLOv3-kitti/data/samples'
     detectimage.detectimagefolder_tovideo(folderpath, mydetector, outputvideopath)
 
 if __name__ == "__main__":
