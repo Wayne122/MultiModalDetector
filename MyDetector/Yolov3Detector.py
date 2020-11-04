@@ -37,6 +37,8 @@ class Yolov3Detector(object):
         parser.add_argument('--FULL_LABEL_CLASSES', type=list, default=args.FULL_LABEL_CLASSES, help='all classes list')
         self.opt = parser.parse_args()
 
+        self.img_shape = (self.opt.img_size, self.opt.img_size)
+
     def detect(self, image):
         cuda = torch.cuda.is_available() and self.opt.use_cuda
 
@@ -63,7 +65,7 @@ class Yolov3Detector(object):
         # Add padding
         input_img = np.pad(image, pad, 'constant', constant_values=127.5) / 255.
         # Resize and normalize
-        input_img = resize(input_img, ((self.opt.img_size, self.opt.img_size), 3), mode='reflect')
+        input_img = resize(input_img, (*self.img_shape, 3), mode='reflect')
         # Channels-first
         input_img = np.transpose(input_img, (2, 0, 1))
         # add new axis
