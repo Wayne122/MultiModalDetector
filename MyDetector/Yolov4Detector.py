@@ -60,10 +60,6 @@ class Yolov4Detector(object):
         names = model.module.names if hasattr(model, 'module') else model.names
         colors = [[random.randint(0, 255) for _ in range(3)] for _ in range(len(names))]
 
-        """
-        #######################################
-        """
-
         im0s = image
         h, w, _ = image.shape
         dim_diff = np.abs(h - w)
@@ -99,7 +95,13 @@ class Yolov4Detector(object):
 
         # Process detections
         path = 'output.png'
+        bbox_list = []
+        cls_ids = []
+        confs = []
         for i, det in enumerate(pred):  # detections per image
+            print('IIIIIIITTTTTTTTSSSSSSSSS')
+            print(pred)
+            print('HEEEEEERRRRRRRRRREEEEEEE')
             p, s, im0 = path, '', im0s
 
             save_path = str(Path(out) / Path(p).name)
@@ -133,11 +135,4 @@ class Yolov4Detector(object):
             if save_img:
                 cv2.imwrite(save_path, im0)
 
-        """
-        ##########################
-        """
-
-        if save_txt or save_img:
-            print('Results saved to %s' % os.getcwd() + os.sep + out)
-            if platform == 'darwin' and not self.opt.update:  # MacOS
-                os.system('open ' + save_path)
+        return bbox_list, cls_ids, confs
