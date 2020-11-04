@@ -1,7 +1,7 @@
 import argparse
 from copy import deepcopy
 
-from models.experimental import *
+from MyDetector.models.experimental import *
 
 
 class Detect(nn.Module):
