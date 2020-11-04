@@ -92,7 +92,7 @@ class Yolov3Detector(object):
         #cmap = plt.get_cmap('Vega20b')
         colors = [cmap(i) for i in np.linspace(0, 1, 20)]
 
-        bbox = []
+        bbox_list = []
         cls_ids = []
         confs = []
 
@@ -124,7 +124,7 @@ class Yolov3Detector(object):
                 n_cls_preds = len(unique_labels)
                 bbox_colors = random.sample(colors, n_cls_preds)
                 for x1, y1, x2, y2, conf, cls_conf, cls_pred in detections:
-                    bbox.append([(x1, y1), (x2, y2)])
+                    bbox_list.append([(x1, y1), (x2, y2)])
                     cls_ids.append(cls_pred)
                     confs.append(cls_conf.item())
                     print ('\t+ Label: %s, Conf: %.5f' % (classes[int(cls_pred)], cls_conf.item()))
@@ -152,4 +152,4 @@ class Yolov3Detector(object):
             plt.savefig('output.png', bbox_inches='tight', pad_inches=0.0)
             plt.close()
 
-        return bbox, cls_ids, confs
+        return bbox_list, cls_ids, confs
