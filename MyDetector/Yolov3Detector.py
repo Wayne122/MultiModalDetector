@@ -53,6 +53,7 @@ class Yolov3Detector(object):
 
         model.eval() # Set in evaluation mode
 
+        image = np.moveaxis(image, -1, 0)
         image = image[np.newaxis, ...]
 
         input_imgs = torch.from_numpy(image)
