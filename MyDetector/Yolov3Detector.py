@@ -30,7 +30,6 @@ class Yolov3Detector(object):
         parser.add_argument('--class_path', type=str, default='data/kitti.names', help='path to class label file')
         parser.add_argument('--conf_thres', type=float, default=args.threshold, help='object confidence threshold')
         parser.add_argument('--nms_thres', type=float, default=0.4, help='iou thresshold for non-maximum suppression')
-        parser.add_argument('--batch_size', type=int, default=1, help='size of the batches')
         parser.add_argument('--n_cpu', type=int, default=8, help='number of cpu threads to use during batch generation')
         parser.add_argument('--img_size', type=int, default=416, help='size of each image dimension')
         parser.add_argument('--use_cuda', type=bool, default=True, help='whether to use cuda if available')
@@ -39,7 +38,8 @@ class Yolov3Detector(object):
     def detect(self, image):
         cuda = torch.cuda.is_available() and self.opt.use_cuda
 
-        os.makedirs('output', exist_ok=True)
+        if self.opt.showfig:
+            os.makedirs('output', exist_ok=True)
 
         # Set up model
         model = Darknet(self.opt.config_path, img_size=self.opt.img_size)
@@ -51,54 +51,34 @@ class Yolov3Detector(object):
 
         model.eval() # Set in evaluation mode
 
-        dataloader = DataLoader(ImageFolder(self.opt.image_folder, img_size=self.opt.img_size),
-                                batch_size=self.opt.batch_size, shuffle=False, num_workers=self.opt.n_cpu)
+        input_imgs = torch.from_numpy(image)
 
         classes = self.opt.FULL_LABEL_CLASSES # Extracts class labels from file
 
         Tensor = torch.cuda.FloatTensor if cuda else torch.FloatTensor
 
-        imgs = []           # Stores image paths
-        img_detections = [] # Stores detections for each image index
-
-        print('data size : %d' % len(dataloader) )
         print ('\nPerforming object detection:')
-        prev_time = time.time()
-        for batch_i, (img_paths, input_imgs) in enumerate(dataloader):
-            # Configure input
-            input_imgs = Variable(input_imgs.type(Tensor))
 
-            # Get detections
-            with torch.no_grad():
-                detections = model(input_imgs)
-                #print(detections)
-                detections = non_max_suppression(detections, 80, self.opt.conf_thres, self.opt.nms_thres)
-                #print(detections)
+        # Configure input
+        input_imgs = Variable(input_imgs.type(Tensor))
 
-
-            # Log progress
-            current_time = time.time()
-            inference_time = datetime.timedelta(seconds=current_time - prev_time)
-            prev_time = current_time
-            print ('\t+ Batch %d, Inference Time: %s' % (batch_i, inference_time))
-
-            # Save image and detections
-            imgs.extend(img_paths)
-            img_detections.extend(detections)
+        # Get detections
+        with torch.no_grad():
+            detections = model(input_imgs)
+            #print(detections)
+            detections = non_max_suppression(detections, 80, self.opt.conf_thres, self.opt.nms_thres)
+            #print(detections)
 
         # Bounding-box colors
-        #cmap = plt.get_cmap('tab20b')
-        cmap = plt.get_cmap('Vega20b')
+        cmap = plt.get_cmap('tab20b')
+        #cmap = plt.get_cmap('Vega20b')
         colors = [cmap(i) for i in np.linspace(0, 1, 20)]
 
-        print ('\nSaving images:')
-        # Iterate through images and save plot of detections
-        for img_i, (path, detections) in enumerate(zip(imgs, img_detections)):
-
-            print ("(%d) Image: '%s'" % (img_i, path))
+        if self.opt.showfig:
+            print ('\nSaving images:')
 
             # Create plot
-            img = np.array(Image.open(path))
+            img = image
             plt.figure()
             fig, ax = plt.subplots(1)
             ax.imshow(img)
@@ -145,5 +125,5 @@ class Yolov3Detector(object):
             plt.axis('off')
             plt.gca().xaxis.set_major_locator(NullLocator())
             plt.gca().yaxis.set_major_locator(NullLocator())
-            plt.savefig('output/%d.png' % (img_i), bbox_inches='tight', pad_inches=0.0)
+            plt.savefig('output.png', bbox_inches='tight', pad_inches=0.0)
             plt.close()
