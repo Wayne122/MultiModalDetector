@@ -2,7 +2,7 @@ import argparse
 
 import torch.backends.cudnn as cudnn
 
-from MyDetector.Yolov4models.experimental import *
+from MyDetector.models.experimental import *
 from MyDetector.yolov4_utils.datasets import *
 from MyDetector.yolov4_utils.utils import *
 

@@ -1,6 +1,6 @@
 # This file contains experimental modules
 
-from MyDetector.Yolov4models.common import *
+from MyDetector.models.common import *
 from MyDetector.yolov4_utils import google_utils
 
 
