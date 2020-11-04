@@ -85,7 +85,7 @@ class Yolov3Detector(object):
         # Get detections
         with torch.no_grad():
             detections = model(input_img)
-            #print(detections)
+            print(type(detections), "HERERERERERE")
             detections = non_max_suppression(detections, 80, self.opt.conf_thres, self.opt.nms_thres)
             #print(detections)
 
