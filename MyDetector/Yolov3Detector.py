@@ -21,7 +21,7 @@ from matplotlib.ticker import NullLocator
 
 class Yolov3Detector(object):
 
-    def __int__(self, args):
+    def __init__(self, args):
 
         parser = argparse.ArgumentParser()
         parser.add_argument('--config_path', type=str, default=args.config_path,
