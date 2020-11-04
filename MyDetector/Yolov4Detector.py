@@ -121,8 +121,14 @@ class Yolov4Detector(object):
                         with open(txt_path + '.txt', 'a') as f:
                             f.write(('%g ' * 5 + '\n') % (cls, *xywh))  # label format
 
+                    bbox_list.append([(int(xyxy[0]), int(xyxy[1])), (int(xyxy[2])-int(xyxy[0]), int(xyxy[3])-int(xyxy[1]))])
+                    cls_ids.append(int(cls))
+                    confs.append(int(conf))
+
                     print('IIIIIIITTTTTTTTSSSSSSSSS')
-                    print(xyxy)
+                    print(bbox_list)
+                    print(cls_ids)
+                    print(confs)
                     print('HEEEEEERRRRRRRRRREEEEEEE')
 
                     if save_img or view_img:  # Add bbox to image
