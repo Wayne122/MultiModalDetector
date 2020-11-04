@@ -126,7 +126,7 @@ class Yolov3Detector(object):
                 bbox_colors = random.sample(colors, n_cls_preds)
                 for x1, y1, x2, y2, conf, cls_conf, cls_pred in detections:
                     bbox_list.append([(x1, y1), (x2, y2)])
-                    cls_ids.append(cls_pred)
+                    cls_ids.append(self.FULL_LABEL_CLASSES.index(cls_pred))
                     confs.append(cls_conf.item())
                     print ('\t+ Label: %s, Conf: %.5f' % (classes[int(cls_pred)], cls_conf.item()))
                     # Rescale coordinates to original dimensions
