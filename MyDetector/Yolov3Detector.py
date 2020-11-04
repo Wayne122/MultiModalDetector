@@ -85,14 +85,16 @@ class Yolov3Detector(object):
         # Get detections
         with torch.no_grad():
             detections = model(input_img)
-            print(type(detections), "HERERERERERE")
             detections = non_max_suppression(detections, 80, self.opt.conf_thres, self.opt.nms_thres)[0]
-            print(type(detections), "STILLLLL")
 
         # Bounding-box colors
         cmap = plt.get_cmap('tab20b')
         #cmap = plt.get_cmap('Vega20b')
         colors = [cmap(i) for i in np.linspace(0, 1, 20)]
+
+        bbox = []
+        cls_ids = []
+        confs = []
 
         if self.opt.showfig:
             print ('\nSaving images:')
@@ -122,7 +124,9 @@ class Yolov3Detector(object):
                 n_cls_preds = len(unique_labels)
                 bbox_colors = random.sample(colors, n_cls_preds)
                 for x1, y1, x2, y2, conf, cls_conf, cls_pred in detections:
-
+                    bbox.append([(x1, y1), (x2, y2)])
+                    cls_ids.append(cls_pred)
+                    confs.append(cls_conf.item())
                     print ('\t+ Label: %s, Conf: %.5f' % (classes[int(cls_pred)], cls_conf.item()))
                     # Rescale coordinates to original dimensions
                     box_h = int(((y2 - y1) / unpad_h) * (img.shape[0]))
@@ -147,3 +151,5 @@ class Yolov3Detector(object):
             plt.gca().yaxis.set_major_locator(NullLocator())
             plt.savefig('output.png', bbox_inches='tight', pad_inches=0.0)
             plt.close()
+
+        return bbox, cls_ids, confs
