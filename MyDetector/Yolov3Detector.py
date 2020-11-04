@@ -53,10 +53,23 @@ class Yolov3Detector(object):
 
         model.eval() # Set in evaluation mode
 
-        image = np.moveaxis(image, -1, 0)
-        image = image[np.newaxis, ...]
 
-        input_imgs = torch.from_numpy(image)
+        h, w, _ = image.shape
+        dim_diff = np.abs(h - w)
+        # Upper (left) and lower (right) padding
+        pad1, pad2 = dim_diff // 2, dim_diff - dim_diff // 2
+        # Determine padding
+        pad = ((pad1, pad2), (0, 0), (0, 0)) if h <= w else ((0, 0), (pad1, pad2), (0, 0))
+        # Add padding
+        input_img = np.pad(image, pad, 'constant', constant_values=127.5) / 255.
+        # Resize and normalize
+        input_img = resize(input_img, ((self.opt.img_size, self.opt.img_size), 3), mode='reflect')
+        # Channels-first
+        input_img = np.transpose(input_img, (2, 0, 1))
+        # add new axis
+        input_img = input_img[np.newaxis, ...]
+        # As pytorch tensor
+        input_img = torch.from_numpy(input_img).float()
 
         classes = self.opt.FULL_LABEL_CLASSES # Extracts class labels from file
 
@@ -65,11 +78,11 @@ class Yolov3Detector(object):
         print ('\nPerforming object detection:')
 
         # Configure input
-        input_imgs = Variable(input_imgs.type(Tensor))
+        input_img = Variable(input_img.type(Tensor))
 
         # Get detections
         with torch.no_grad():
-            detections = model(input_imgs)
+            detections = model(input_img)
             #print(detections)
             detections = non_max_suppression(detections, 80, self.opt.conf_thres, self.opt.nms_thres)
             #print(detections)
