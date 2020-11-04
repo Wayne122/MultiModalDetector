@@ -86,7 +86,7 @@ class Yolov3Detector(object):
         with torch.no_grad():
             detections = model(input_img)
             print(type(detections), "HERERERERERE")
-            detections = non_max_suppression(detections, 80, self.opt.conf_thres, self.opt.nms_thres)
+            detections = non_max_suppression(detections, 80, self.opt.conf_thres, self.opt.nms_thres)[0]
             print(type(detections), "STILLLLL")
 
         # Bounding-box colors
