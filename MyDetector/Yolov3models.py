@@ -8,8 +8,8 @@ import numpy as np
 
 from PIL import Image
 
-from MyDetector.utils_cus.parse_config import *
-from MyDetector.utils_cus.utils import build_targets
+from MyDetector.yolov3_utils.parse_config import *
+from MyDetector.yolov3_utils.utils import build_targets
 from collections import defaultdict
 
 import matplotlib.pyplot as plt

@@ -1,8 +1,8 @@
 from __future__ import division
 
 from MyDetector.Yolov3models import *
-from MyDetector.utils_cus.utils import *
-from MyDetector.utils_cus.datasets import *
+from MyDetector.yolov3_utils.utils import *
+from MyDetector.yolov3_utils.datasets import *
 
 import os
 import sys

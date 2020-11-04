@@ -9,7 +9,7 @@ from MyDetector.coco_utils import get_coco_api_from_dataset
 from MyDetector.coco_eval import CocoEvaluator
 
 #import importlib
-import MyDetector.utils_cus as utils
+import MyDetector.utils as utils
 #importlib.reload(utils)
 #importlib.reload(get_coco_api_from_dataset)
 
