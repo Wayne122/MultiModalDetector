@@ -53,6 +53,8 @@ class Yolov3Detector(object):
 
         model.eval() # Set in evaluation mode
 
+        image = image[np.newaxis, ...]
+
         input_imgs = torch.from_numpy(image)
 
         classes = self.opt.FULL_LABEL_CLASSES # Extracts class labels from file
