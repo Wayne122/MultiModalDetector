@@ -129,12 +129,6 @@ class Yolov4Detector(object):
             # Print time (inference + NMS)
             print('%sDone. (%.3fs)' % (s, t2 - t1))
 
-            # Stream results
-            if view_img:
-                cv2.imshow(p, im0)
-                if cv2.waitKey(1) == ord('q'):  # q to quit
-                    raise StopIteration
-
             # Save results (image with detections)
             if save_img:
                 cv2.imwrite(save_path, im0)
