@@ -123,7 +123,7 @@ class Yolov4Detector(object):
 
                     bbox_list.append([(int(xyxy[0]), int(xyxy[1])), (int(xyxy[2])-int(xyxy[0]), int(xyxy[3])-int(xyxy[1]))])
                     cls_ids.append(int(cls))
-                    confs.append(int(conf))
+                    confs.append(float(conf))
 
                     print('IIIIIIITTTTTTTTSSSSSSSSS')
                     print(bbox_list)
