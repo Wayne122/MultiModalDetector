@@ -37,6 +37,7 @@ class Yolov3Detector(object):
         parser.add_argument('--FULL_LABEL_CLASSES', type=list, default=args.FULL_LABEL_CLASSES, help='all classes list')
         self.opt = parser.parse_args()
 
+        self.FULL_LABEL_CLASSES = self.opt.FULL_LABEL_CLASSES
         self.img_shape = (self.opt.img_size, self.opt.img_size)
 
     def detect(self, image):
