@@ -8,6 +8,7 @@ from MyDetector import TF2Detector
 from MyDetector import Detectron2Detector
 from MyDetector import TorchVisionDetector
 from MyDetector import Yolov3Detector
+from MyDetector import Yolov4Detector
 from utils import detectimage
 
 class TF2detectorargs:
@@ -47,6 +48,16 @@ class Yolov3detectorargs:
     ]
     threshold = 0.3
 
+class Yolov4detectorargs:
+    modelname = 'yolov4'#not used here
+    config_path = '' #not used here
+    modelbasefolder = '/content/PyTorch_YOLOv4/weights'
+    modelfilename='yolov4l-kitti.pt'
+    showfig='True'
+    FULL_LABEL_CLASSES = [
+        'Car', 'Van', 'Truck', 'Pedestrian', 'Person_sitting', 'Cyclist', 'Tram', 'Misc'
+    ]
+    threshold = 0.3
 
 def testTorchVisionDetector(detectorargs):
     mydetector = TorchVisionDetector.TorchVisionFasterRCNNDetector(detectorargs)
@@ -100,6 +111,17 @@ def testYolov3Detector(detectorargs):
     folderpath='/content/PyTorch-YOLOv3-kitti/data/samples'
     detectimage.detectimagefolder_tovideo(folderpath, mydetector, outputvideopath)
 
+def testYolov4Detector(detectorargs):
+    mydetector = Yolov4Detector.Yolov4Detector(detectorargs)
+    imgpath = '/content/PyTorch-YOLOv3-kitti/data/samples/000211.png'
+    bbox_xyxy, pred_labels, cls_conf=detectimage.detectoneimage_novis(imgpath, mydetector)
+    print(pred_labels)
+
+    #Test a folder of image and output a video
+    outputvideopath='yolov3videoresult.mp4'
+    folderpath='/content/PyTorch-YOLOv3-kitti/data/samples'
+    detectimage.detectimagefolder_tovideo(folderpath, mydetector, outputvideopath)
+
 if __name__ == "__main__":
     #Test TF2
     #testTF2Detector(TF2detectorargs)
@@ -111,4 +133,7 @@ if __name__ == "__main__":
     #testTorchVisionDetector(TorchVisiondetectorargs)
 
     #Test Yolov3
-    testYolov3Detector(Yolov3detectorargs)
+    #testYolov3Detector(Yolov3detectorargs)
+
+    #Test Yolov4
+    testYolov4Detector(Yolov4detectorargs)
