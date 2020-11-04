@@ -87,7 +87,7 @@ class Yolov3Detector(object):
             detections = model(input_img)
             print(type(detections), "HERERERERERE")
             detections = non_max_suppression(detections, 80, self.opt.conf_thres, self.opt.nms_thres)
-            #print(detections)
+            print(type(detections), "STILLLLL")
 
         # Bounding-box colors
         cmap = plt.get_cmap('tab20b')
